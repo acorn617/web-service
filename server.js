@@ -6,6 +6,9 @@ const app = express()
 app.use(express.static(__dirname + '/public'));
 // Express looks up the files in the order in which you set the static directories with the 'express.static' middleware function.
 
+app.set('view engine', 'ejs') 
+// Set screen engine to ejs
+
 const { MongoClient } = require('mongodb')
 
 
@@ -44,6 +47,10 @@ app.get('/shop', (req , res) => {
 app.get('/list', async (req , res) => {
   let result = await db.collection('post').find().toArray()
   console.log(result[0].title)
+  // res.send(result[0].title)
+  res.render('list.ejs',{ posts : result })
 })
 
-// Take out the data from db and show it on the list page(/list).
+// Take out the data from db and show it on the list page(/list). 
+
+
