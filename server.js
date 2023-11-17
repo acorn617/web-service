@@ -9,6 +9,10 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs') 
 // Set screen engine to ejs
 
+app.use(express.json())
+app.use(express.urlencoded({extended:true})) 
+//two codes required for specifically POST requests and PUT Requests (To make it easier to get the data out)
+
 const { MongoClient } = require('mongodb')
 
 
@@ -20,8 +24,7 @@ new MongoClient(url).connect().then((client)=>{
 }).catch((err)=>{
   console.log(err)
 })
-
-// 9-18: Connect db to Application
+//: Connect db to Application
 
 app.listen(8080, () => {
     console.log(' working on http://localhost:8080 ')
@@ -50,7 +53,25 @@ app.get('/list', async (req , res) => {
   // res.send(result[0].title)
   res.render('list.ejs',{ posts : result })
 })
-
 // Take out the data from db and show it on the list page(/list). 
+
+
+app.get('/time', (req , res) => {
+  let currentTime = new Date() 
+  res.render('time.ejs',{ time : currentTime })
+}) 
+// A page(/time) that shows the current time
+
+app.get('/write', (req , res) => {
+  res.render('write.ejs')
+}) 
+
+
+app.post('/add', async (req , res) => {
+  await db.collection('post').insertOne(req.body)
+  // insertOne({ title : req.body.title, content : req.body.content }) 도 가능
+  res.send('작성이 완료되었습니다.')
+})
+
 
 
