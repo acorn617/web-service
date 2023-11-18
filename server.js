@@ -49,7 +49,7 @@ app.get('/shop', (req , res) => {
 
 app.get('/list', async (req , res) => {
   let result = await db.collection('post').find().toArray()
-  console.log(result[0].title)
+  // console.log(result[0].title)
   // res.send(result[0].title)
   res.render('list.ejs',{ posts : result })
 })
@@ -68,10 +68,18 @@ app.get('/write', (req , res) => {
 
 
 app.post('/add', async (req , res) => {
-  await db.collection('post').insertOne(req.body)
-  // insertOne({ title : req.body.title, content : req.body.content }) 도 가능
-  res.send('작성이 완료되었습니다.')
-})
+  if (req.body.title == '') {
+    res.send('제목을 적어주세요')
+  } else {
+    try {
+      db.collection('post').insertOne({ title : req.body.title, content : req.body.content })
+    } catch (e) {
+      console.log(e)
+      res.send('DB error')
+    } 
+    res.redirect('/list') 
+  }
+  })
 
 
-
+  // db.collection.insertOne():Inserts a new document in a collection.
