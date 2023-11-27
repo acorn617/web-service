@@ -13,7 +13,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true})) 
 //two codes required for specifically POST requests and PUT Requests (To make it easier to get the data out)
 
-const { MongoClient } = require('mongodb')
+const { MongoClient,ObjectId } = require('mongodb')
+
 
 
 let db
@@ -72,7 +73,7 @@ app.post('/add', async (req , res) => {
     res.send('제목을 적어주세요')
   } else {
     try {
-      db.collection('post').insertOne({ title : req.body.title, content : req.body.content })
+      await db.collection('post').insertOne({ title : req.body.title, content : req.body.content })
     } catch (e) {
       console.log(e)
       res.send('DB error')
@@ -83,3 +84,15 @@ app.post('/add', async (req , res) => {
 
 
   // db.collection.insertOne():Inserts a new document in a collection.
+
+  app.get('/detail/:aaaa',async (req , res) => {
+    let result = await db.collection('post').findOne({ _id : new ObjectId(req.params.id) })
+    console.log(req.params) 
+    res.render('detail.ejs', { result : result })
+  })
+
+
+  // 1) If someone accesses /detail/1234,execute the code
+  // 2) find a content whose id is "1234" in the DB
+  // 3) Put it in the 'detail.ejs file' and send it to the user
+  // const { ObjectId } = require('mongodb')  >> code for using 'ObjectId()'
