@@ -28,7 +28,7 @@ new MongoClient(url).connect().then((client)=>{
 //: Connect db to Application
 
 app.listen(8080, () => {
-    console.log(' working on http://localhost:8080 ')
+    console.log('working on http://localhost:8080 ')
 })
 // Bind and listen to the connections on the specified host and port.
 
@@ -85,10 +85,25 @@ app.post('/add', async (req , res) => {
 
   // db.collection.insertOne():Inserts a new document in a collection.
 
-  app.get('/detail/:aaaa',async (req , res) => {
-    let result = await db.collection('post').findOne({ _id : new ObjectId(req.params.id) })
-    console.log(req.params) 
-    res.render('detail.ejs', { result : result })
+  // app.get('/detail/:id',async (req , res) => {
+  //   let result = await db.collection('post').findOne({ _id : new ObjectId(req.params.id) })
+  //   console.log(req.params) 
+  //   res.render('detail.ejs', { result : result })
+  // })
+
+  app.get('/detail/:id', async (req , res) => {
+    try  {
+      let result = await db.collection('post').findOne({ _id : new ObjectId(req.params.id) })
+      if (result == null) {
+        res.status(400).send('없는 게시물 입니다')
+      } else {
+        res.render('detail.ejs', { result : result })
+      }
+      
+    } catch (e){
+      res.send('잘못된 요청입니다')
+    }
+    
   })
 
 
@@ -96,3 +111,6 @@ app.post('/add', async (req , res) => {
   // 2) find a content whose id is "1234" in the DB
   // 3) Put it in the 'detail.ejs file' and send it to the user
   // const { ObjectId } = require('mongodb')  >> code for using 'ObjectId()'
+  // add exception handling
+
+  

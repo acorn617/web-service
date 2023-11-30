@@ -12,9 +12,16 @@
   <!-- insert the nav bar -->
 
   <% for (var i = 0; i < posts.length; i++){ %>
+    <!-- Create nth content box -->
     <div class="white-bg">
       <div class="list-box">
-        <h4><%= posts[i].title %></h4>
+        
+        <h4><a href="/detail/<%= posts[i]._id %>" style="text-decoration : none">
+          <%= posts[i].title %>
+          <!-- Create nth link using tag <a> -->
+          <!-- text-decoration : none  : getting rid of underline -->
+        </a>
+        </h4>
         <p><%= posts[i].content %></p>
       </div>
 
@@ -25,3 +32,5 @@
 </html>
 
 <!-- 느낌표치고 엔터키 : html 기본템플릿 -->
+
+
