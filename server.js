@@ -113,4 +113,19 @@ app.post('/add', async (req , res) => {
   // const { ObjectId } = require('mongodb')  >> code for using 'ObjectId()'
   // add exception handling
 
-  
+  app.get('/edit/:id', async(req , res) => {
+    let result = await db.collection('post').findOne({ _id : new ObjectId(req.params.id) })
+    console.log('유저의 수정 요청'+JSON.stringify(result)) 
+    res.render('edit.ejs', {result : result})
+  })
+
+
+  app.post('/edit', async (req , res)=>{
+    await db.collection('post').updateOne({ _id : new ObjectId(req.body.id) },
+      {$set : { title : req.body.title, content : req.body.content }
+    })
+    // var ObjectId = require('mongoose').Types.ObjectId;
+    // console.log('유효한 ObjectId 값인가?:'+ObjectId.isValid('6569871534b442df13106680'))
+    res.redirect('/list')
+  }) 
+  // .find({ user: { $exists: true }, $where: 'this.user.length === 24' })

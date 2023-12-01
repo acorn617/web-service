@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/main.css" rel="stylesheet">
+</head>
+<body >
+    <%- include('nav.ejs') %>
+    <!-- insert the nav bar -->
+    <form class="form-box" action="/edit" method="POST">
+        <!--  method="POST": Sends form data to the server -->
+        <!-- <form action="URL">: Where to send the form-data when the form is submitted -->
+        <h4>게시판 글 수정</h4>
+        <input name="id" value="<%= result._id %>" style="display : none">
+        <input name="title" value="<%= result.title %>">
+        <input name="content" value="<%= result.content %>">
+        <button type="submit">수정</button>
+    </form> 
+    <!-- Page with form for writing -->
+
+  </body>
+</html>
+
