@@ -115,7 +115,6 @@ app.post('/add', async (req , res) => {
 
   app.get('/edit/:id', async(req , res) => {
     let result = await db.collection('post').findOne({ _id : new ObjectId(req.params.id) })
-    console.log('유저의 수정 요청'+JSON.stringify(result)) 
     res.render('edit.ejs', {result : result})
   })
 
@@ -127,5 +126,29 @@ app.post('/add', async (req , res) => {
     // var ObjectId = require('mongoose').Types.ObjectId;
     // console.log('유효한 ObjectId 값인가?:'+ObjectId.isValid('6569871534b442df13106680'))
     res.redirect('/list')
+    console.log(req.body.id+'의 수정 완료')
   }) 
-  // .find({ user: { $exists: true }, $where: 'this.user.length === 24' })
+  
+  app.delete('/delete', async (req , res)=>{
+    let result = await db.collection('post').deleteOne( { _id : new ObjectId(req.query.docid) } )
+    res.send('삭제 완료')
+    console.log(req.query.docid+'의 삭제 완료')
+  })
+
+  // app.get('/list/1', async (req , res) => {
+  //   let result = await db.collection('post').find().skip(0).limit(5).toArray() //1번부터 5번째 글 찾아서 result 변수에 저장하기
+  //   res.render('list.ejs', { posts : result })
+  // })
+
+  // app.get('/list/2', async (req , res) => {
+  //   let result = await db.collection('post').find().skip(5).limit(5).toArray() //6번부터 10번째 글 찾아서 result 변수에 저장하기
+  //   res.render('list.ejs', { posts : result })
+  // })
+
+//페이지네이션 기능 추가
+
+  app.get('/list/:id', async (req , res) => {
+    let result = await db.collection('post').find().skip( (req.params.id - 1) * 5 ).limit(5).toArray() 
+    res.render('list.ejs', { posts : result })
+  }) 
+    
