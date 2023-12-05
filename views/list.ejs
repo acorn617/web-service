@@ -39,13 +39,26 @@
       <div class="pagination">
         <img src="/arrow.png"><button class="btn" onclick="backBtn()">prev</button>
           <ul>
-            <li class="link active" value="1" onclick="activelink()" >1</li>
-            <li class="link" value="2" onclick="activelink()">2</li>
-            <li class="link" value="3" onclick="activelink()">3</li>
-            <li class="link" value="4" onclick="activelink()">4</li>
-            <li class="link" value="5" onclick="activelink()">5</li>
-            <li class="link" value="6" onclick="activelink()">6</li>
-          
+
+            <!-- <% if ( posts.length < 26 ){ %> -->
+
+                <% for (var i = 1; i < 6 ; i++){ %>
+                <li class="link" value="<%= i %>" onclick="activelink()"><a href="/list/<%= i %>" style="text-decoration : none">
+                <%= i %></a></li>
+                <% } %>
+
+            <!-- <% } else{ %>
+                   
+                  
+                  <% for (var i = 6;  i < 11 ; i++){ %>
+                    <li class="link" value="<%= i %>" onclick="activelink()"><a href="/list/<%= i %>" style="text-decoration : none">
+                    <%= i %></a></li>
+                  <% } %> -->
+
+            <!-- <% } %> -->
+                 
+
+           
           </ul>
           <button class="btn" onclick="nextBtn()">next</button>
           <img src="/arrow.png" class="rotateImg"> 
@@ -63,6 +76,7 @@
         .then((r)=>{e.target.parentElement.parentElement.style.display = 'none'  })
       })
     }
+
     // 페이지네이션
     let link = document.getElementsByClassName("link");
 
@@ -95,6 +109,15 @@
         link[currentValue-1].classList.add("active")
         }
       }
+       
+      // 페이지네이션 (2)
+      document.querySelectorAll('.link')[0].addEventListener('click', function(){
+          console.log(posts.length)
+
+      })
+
+      
+
     </script>
 
   </body>

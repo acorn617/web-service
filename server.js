@@ -48,13 +48,7 @@ app.get('/shop', (req , res) => {
 }) 
 // The app responds with “shop page!” for requests to the URL (/shop).
 
-app.get('/list', async (req , res) => {
-  let result = await db.collection('post').find().toArray()
-  // console.log(result[0].title)
-  // res.send(result[0].title)
-  res.render('list.ejs',{ posts : result })
-})
-// Take out the data from db and show it on the list page(/list). 
+
 
 
 app.get('/time', (req , res) => {
@@ -78,7 +72,7 @@ app.post('/add', async (req , res) => {
       console.log(e)
       res.send('DB error')
     } 
-    res.redirect('/list') 
+    res.redirect('/list/1') 
   }
   })
 
@@ -123,32 +117,23 @@ app.post('/add', async (req , res) => {
     await db.collection('post').updateOne({ _id : new ObjectId(req.body.id) },
       {$set : { title : req.body.title, content : req.body.content }
     })
-    // var ObjectId = require('mongoose').Types.ObjectId;
-    // console.log('유효한 ObjectId 값인가?:'+ObjectId.isValid('6569871534b442df13106680'))
-    res.redirect('/list')
+    res.redirect('/list/1')
     console.log(req.body.id+'의 수정 완료')
   }) 
   
+
+  // 삭제 기능 추가
   app.delete('/delete', async (req , res)=>{
     let result = await db.collection('post').deleteOne( { _id : new ObjectId(req.query.docid) } )
     res.send('삭제 완료')
     console.log(req.query.docid+'의 삭제 완료')
   })
 
-  // app.get('/list/1', async (req , res) => {
-  //   let result = await db.collection('post').find().skip(0).limit(5).toArray() //1번부터 5번째 글 찾아서 result 변수에 저장하기
-  //   res.render('list.ejs', { posts : result })
-  // })
 
-  // app.get('/list/2', async (req , res) => {
-  //   let result = await db.collection('post').find().skip(5).limit(5).toArray() //6번부터 10번째 글 찾아서 result 변수에 저장하기
-  //   res.render('list.ejs', { posts : result })
-  // })
+  //페이지네이션  추가
 
-//페이지네이션 기능 추가
-
-  app.get('/list/:id', async (req , res) => {
-    let result = await db.collection('post').find().skip( (req.params.id - 1) * 5 ).limit(5).toArray() 
+  app.get('/list/:page', async (req , res) => {
+    let result = await db.collection('post').find().skip( (req.params.page - 1) * 5 ).limit(5).toArray() 
     res.render('list.ejs', { posts : result })
   }) 
     
