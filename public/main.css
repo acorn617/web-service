@@ -98,10 +98,11 @@ ul li{
 } 
 
 ul li.active{
-  color: #fff; 
+  /* color: #fff; 
   background-image: linear-gradient(#ff4568,#ff4568);
   background-repeat: no-repeat;
-  background-position: 0 0;
+  background-position: 0 0; */
+  background: linear-gradient(to-bottom, #9c9c9c 0% ,#ff4568 100%);
 }
 
 .btn{
@@ -124,3 +125,5 @@ ul li.active{
 .rotateImg{
   transform: rotate(180deg);
 }
+
+

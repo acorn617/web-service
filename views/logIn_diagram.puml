@@ -1,0 +1,29 @@
+@startuml 로그인 시퀀스 다이어그램
+
+actor 사용자
+participant "웹 애플리케이션" as 웹앱
+database "사용자 데이터베이스" as DB
+
+activate 사용자
+사용자 -> 웹앱: 로그인 폼 요청
+activate 웹앱
+웹앱 -> 사용자: 로그인 폼 응답
+deactivate 웹앱
+
+사용자 -> 웹앱: 아이디와 비밀번호 전송
+activate 웹앱
+웹앱 -> DB: 아이디와 비밀번호 확인 요청
+activate DB
+DB --> 웹앱: 인증 결과 (성공 또는 실패)
+deactivate DB
+
+alt 인증 성공
+    웹앱 -> 사용자: 로그인 성공 응답
+else 인증 실패
+    웹앱 -> 사용자: 로그인 실패 응답
+end
+
+deactivate 웹앱
+deactivate 사용자
+
+@enduml
